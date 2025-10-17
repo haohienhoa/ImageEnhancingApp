@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Enhancing App</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Image Enhancing Application</h1>
+            <p>Tải lên một ảnh màu và áp dụng các bộ lọc để nâng cao chất lượng</p>
+        </header>
+
+        <main>
+            <div class="upload-section">
+                <label for="image-input" class="custom-file-upload">Chọn một ảnh</label>
+                <input type="file" id="image-input" accept="image/*">
+            </div>
+
+            <div class="controls" id="controls-panel" style="display: none;">
+                <fieldset>
+                    <legend>Denoising / Smoothing</legend>
+                    <button id="btn-denoise-mean" class="btn">Làm mịn (Mean)</button>
+                    <button id="btn-denoise-median" class="btn">Làm mịn (Median)</button>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Sharpening</legend>
+                    <button id="btn-sharpen" class="btn">Làm nét (Sharpen)</button>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Edge Detection</legend>
+                    <button id="btn-edge-sobel" class="btn">Dò biên (Sobel)</button>
+                    <button id="btn-edge-prewitt" class="btn">Dò biên (Prewitt)</button>
+                    <button id="btn-edge-canny" class="btn">Dò biên (Canny)</button>
+                </fieldset>
+                
+                <hr>
+                <button id="btn-reset" class="btn btn-secondary">Reset về ảnh gốc</button>
+            </div>
+
+            <div class="image-display" id="image-display-panel" style="display: none;">
+                <div class="image-card">
+                    <h3>Ảnh Gốc</h3>
+                    <img id="original-image" src="#" alt="Ảnh gốc">
+                </div>
+                <div class="image-card">
+                    <h3>Ảnh Đã Xử Lý</h3>
+                    <img id="processed-image" src="#" alt="Ảnh đã xử lý">
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="/static/script.js"></script>
+</body>
+</html>
