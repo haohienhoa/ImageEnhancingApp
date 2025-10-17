@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+gunicorn
+opencv-python-headless
+numpy
+jinja2
