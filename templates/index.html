@@ -3,59 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Enhancing App</title>
+    <title>Lab-03: Image Enhancing</title>
     <link rel="stylesheet" href="/static/style.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Image Enhancing Application</h1>
-            <p>Tải lên một ảnh màu và áp dụng các bộ lọc để nâng cao chất lượng</p>
-        </header>
-
-        <main>
-            <div class="upload-section">
-                <label for="image-input" class="custom-file-upload">Chọn một ảnh</label>
-                <input type="file" id="image-input" accept="image/*">
+    <div class="app-container">
+        <!-- ===== SIDEBAR - CONTROL PANEL ===== -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fa-solid fa-wand-magic-sparkles"></i> Image Enhancing</h2>
             </div>
-
-            <div class="controls" id="controls-panel" style="display: none;">
-                <fieldset>
-                    <legend>Denoising / Smoothing</legend>
-                    <button id="btn-denoise-mean" class="btn">Làm mịn (Mean)</button>
-                    <button id="btn-denoise-median" class="btn">Làm mịn (Median)</button>
-                </fieldset>
-
-                <fieldset>
-                    <legend>Sharpening</legend>
-                    <button id="btn-sharpen" class="btn">Làm nét (Sharpen)</button>
-                </fieldset>
-
-                <fieldset>
-                    <legend>Edge Detection</legend>
-                    <button id="btn-edge-sobel" class="btn">Dò biên (Sobel)</button>
-                    <button id="btn-edge-prewitt" class="btn">Dò biên (Prewitt)</button>
-                    <button id="btn-edge-canny" class="btn">Dò biên (Canny)</button>
-                </fieldset>
-                
-                <hr>
-                <button id="btn-reset" class="btn btn-secondary">Reset về ảnh gốc</button>
-            </div>
-
-            <div class="image-display" id="image-display-panel" style="display: none;">
-                <div class="image-card">
-                    <h3>Ảnh Gốc</h3>
-                    <img id="original-image" src="#" alt="Ảnh gốc">
+            
+            <div class="image-upload-area">
+                <div class="thumbnail-container">
+                    <img id="image-thumbnail" src="#" alt="" style="display: none;">
+                    <div id="upload-placeholder">
+                        <i class="fa-regular fa-image"></i>
+                    </div>
                 </div>
-                <div class="image-card">
-                    <h3>Ảnh Đã Xử Lý</h3>
-                    <img id="processed-image" src="#" alt="Ảnh đã xử lý">
+                <label for="image-input" class="btn-upload">
+                    <i class="fa-solid fa-upload"></i> Tải ảnh lên
+                </label>
+                <input type="file" id="image-input" accept="image/*" hidden>
+            </div>
+
+            <div class="controls" id="controls-panel" style="opacity: 0.5; pointer-events: none;">
+                <!-- Denoising Section -->
+                <div class="control-section">
+                    <h3>1. Denoising / Smoothing</h3>
+                    <div class="slider-group">
+                        <label>Kernel Size: <span id="denoise-kernel-value">5</span></label>
+                        <input type="range" id="denoise-kernel" min="3" max="15" step="2" value="5" class="slider">
+                    </div>
+                    <div class="button-group">
+                        <button class="btn" data-operation="denoise_mean">Mean</button>
+                        <button class="btn" data-operation="denoise_median">Median</button>
+                    </div>
+                </div>
+
+                <!-- Sharpening Section -->
+                <div class="control-section">
+                    <h3>2. Sharpening</h3>
+                     <div class="button-group one-col">
+                        <button class="btn" data-operation="sharpen">Sharpen Filter</button>
+                    </div>
+                </div>
+
+                <!-- Edge Detection Section -->
+                <div class="control-section">
+                    <h3>3. Edge Detection</h3>
+                    <div class="slider-group">
+                        <label>Canny Low Thresh: <span id="canny-thresh1-value">100</span></label>
+                        <input type="range" id="canny-thresh1" min="0" max="255" value="100" class="slider">
+                        <label>Canny High Thresh: <span id="canny-thresh2-value">200</span></label>
+                        <input type="range" id="canny-thresh2" min="0" max="255" value="200" class="slider">
+                    </div>
+                    <div class="button-group">
+                        <button class="btn" data-operation="edge_sobel">Sobel</button>
+                        <button class="btn" data-operation="edge_prewitt">Prewitt</button>
+                        <button class="btn" data-operation="edge_canny">Canny</button>
+                    </div>
+                </div>
+
+                <div class="control-section mt-auto">
+                     <button id="btn-reset" class="btn btn-secondary">
+                        <i class="fa-solid fa-rotate-left"></i> Reset
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- ===== MAIN CONTENT - IMAGE DISPLAY ===== -->
+        <main class="main-content">
+            <!-- Thông báo chào mừng -->
+            <div id="welcome-message">
+                <i class="fa-solid fa-image fa-5x"></i>
+                <h1>Chưa có ảnh nào được chọn</h1>
+                <p>Vui lòng tải ảnh lên từ thanh bên trái để bắt đầu.</p>
+            </div>
+
+            <!-- Khu vực hiển thị ảnh song song -->
+            <div id="image-workspace" class="hidden">
+                <div class="comparison-view">
+                    <!-- Cột Ảnh Gốc -->
+                    <div class="image-box">
+                        <div class="box-header">
+                            <h3><i class="fa-regular fa-file-image"></i> Ảnh Gốc</h3>
+                        </div>
+                        <div class="img-wrapper">
+                            <img id="original-image" src="#" alt="Original">
+                        </div>
+                    </div>
+
+                    <!-- Cột Ảnh Đã Xử Lý -->
+                    <div class="image-box">
+                        <div class="box-header">
+                            <h3><i class="fa-solid fa-wand-magic"></i> <span id="active-filter-name">Kết quả</span></h3>
+                        </div>
+                        <div class="img-wrapper">
+                            <img id="processed-image" src="#" alt="Processed">
+                            <!-- Loading Spinner -->
+                            <div id="loader" class="hidden">
+                                <div class="spinner"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>
     </div>
-    
+
     <script src="/static/script.js"></script>
 </body>
 </html>

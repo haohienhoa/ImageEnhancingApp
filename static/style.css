@@ -1,176 +1,163 @@
-/* Tổng thể */
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+/* CSS Variables */
+:root {
+    --primary: #2563eb;       /* Blue */
+    --primary-hover: #1d4ed8;
+    --bg-app: #f1f5f9;        /* Light Gray bg */
+    --bg-panel: #ffffff;      /* White */
+    --text-main: #0f172a;     /* Dark blue/black */
+    --text-muted: #64748b;    /* Gray text */
+    --border: #e2e8f0;        /* Light border */
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background-color: #f4f7f9;
-    color: #333;
-    margin: 0;
-    padding: 20px;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-app);
+    color: var(--text-main);
+    height: 100vh;
+    overflow: hidden;
+}
+
+.app-container {
     display: flex;
-    justify-content: center;
+    height: 100vh;
 }
 
-.container {
-    width: 100%;
-    max-width: 1200px;
-}
-
-header {
-    text-align: center;
-    margin-bottom: 30px;
-    border-bottom: 1px solid #dfe6e9;
-    padding-bottom: 20px;
-}
-
-h1 {
-    color: #2d3436;
-    margin: 0;
-}
-
-h2 {
-    color: #2d3436;
-    border-bottom: 2px solid #0984e3;
-    padding-bottom: 5px;
-    margin-top: 0;
-}
-
-h3 {
-    text-align: center;
-    color: #636e72;
-    margin-bottom: 15px;
-}
-
-/* Phần tải ảnh */
-.upload-section {
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-.custom-file-upload {
-    display: inline-block;
-    padding: 12px 25px;
-    cursor: pointer;
-    background-color: #0984e3;
-    color: white;
-    border-radius: 5px;
-    font-weight: bold;
-    transition: background-color 0.3s;
-}
-
-.custom-file-upload:hover {
-    background-color: #0060ad;
-}
-
-input[type="file"] {
-    display: none;
-}
-
-/* Bảng điều khiển */
-.controls {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-    margin-bottom: 30px;
-}
-
-.control-group {
+/* ===== Sidebar ===== */
+.sidebar {
+    width: 300px;
+    background-color: var(--bg-panel);
+    border-right: 1px solid var(--border);
     display: flex;
-    gap: 15px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
+    flex-direction: column;
+    height: 100%;
 }
 
-.slider-group {
-    margin-bottom: 20px;
+.sidebar-header {
+    padding: 20px;
+    border-bottom: 1px solid var(--border);
 }
+.sidebar-header h2 { font-size: 1.25rem; color: var(--text-main); display: flex; align-items: center; gap: 10px; }
+.sidebar-header i { color: var(--primary); }
 
-.slider-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 500;
+/* Upload Area */
+.image-upload-area { padding: 20px; border-bottom: 1px solid var(--border); }
+.thumbnail-container {
+    width: 100%; aspect-ratio: 16/9; background: #f8fafc;
+    border: 2px dashed var(--border); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden; margin-bottom: 15px; position: relative;
 }
+#image-thumbnail { width: 100%; height: 100%; object-fit: cover; }
+#upload-placeholder i { font-size: 40px; color: var(--border); }
 
-.slider {
-    width: 100%;
-    cursor: pointer;
+.btn-upload {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%; padding: 10px; background-color: var(--primary); color: white;
+    border-radius: 6px; font-weight: 500; cursor: pointer; transition: 0.2s;
 }
+.btn-upload:hover { background-color: var(--primary-hover); }
 
-/* Các nút */
+/* Controls */
+.controls { padding: 20px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 25px; transition: opacity 0.3s; }
+.control-section h3 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 15px; font-weight: 600; }
+
+.slider-group { margin-bottom: 15px; }
+.slider-group label { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 5px; color: var(--text-main); }
+.slider { width: 100%; cursor: pointer; accent-color: var(--primary); }
+
+.button-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.button-group.one-col { grid-template-columns: 1fr; }
+
 .btn {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    background-color: #0984e3;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.1s;
+    padding: 8px 12px; background-color: white; color: var(--text-main);
+    border: 1px solid var(--border); border-radius: 6px; cursor: pointer;
+    font-weight: 500; font-size: 0.9rem; transition: all 0.2s;
 }
+.btn:hover { background-color: #f8fafc; border-color: #cbd5e1; }
+.btn.active-filter { background-color: var(--primary); color: white; border-color: var(--primary); }
 
-.btn:hover {
-    background-color: #0060ad;
+.mt-auto { margin-top: auto; }
+.btn-secondary { width: 100%; background-color: #f1f5f9; border: none; color: var(--text-muted); display: flex; align-items: center; justify-content: center; gap: 8px; }
+.btn-secondary:hover { background-color: #e2e8f0; color: var(--text-main); }
+
+/* ===== Main Content (Side-by-Side View) ===== */
+.main-content { flex: 1; padding: 20px; position: relative; display: flex; flex-direction: column; }
+
+/* Welcome State */
+#welcome-message {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    text-align: center; color: var(--text-muted);
 }
+#welcome-message i { color: var(--border); margin-bottom: 20px; }
+#welcome-message h1 { font-size: 1.5rem; color: var(--text-main); margin-bottom: 10px; }
 
-.btn:active {
-    transform: scale(0.98);
-}
+/* Workspace */
+#image-workspace { height: 100%; width: 100%; }
+.hidden { display: none !important; }
 
-.btn.btn-secondary {
-    background-color: #636e72;
-}
-.btn.btn-secondary:hover {
-    background-color: #2d3436;
-}
-
-
-/* Khu vực hiển thị ảnh */
-.image-display {
+/* Side-by-Side Layout */
+.comparison-view {
     display: flex;
-    justify-content: space-around;
-    gap: 30px;
-    flex-wrap: wrap;
-}
-
-.image-card {
-    flex: 1;
-    min-width: 300px;
-    max-width: 500px;
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-}
-
-.image-card img {
+    gap: 20px;
+    height: 100%;
     width: 100%;
-    height: auto;
-    border-radius: 5px;
-    border: 1px solid #dfe6e9;
-    background-color: #ecf0f1;
 }
 
-.chart-container {
-    margin-top: 20px;
-    height: 150px;
+.image-box {
+    flex: 1; /* Chia đều không gian */
+    background: var(--bg-panel);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
-/* Thêm vào cuối file static/style.css */
-
-fieldset {
-    border: 1px solid #dfe6e9;
-    border-radius: 8px;
+.box-header {
     padding: 15px;
-    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+    background: #f8fafc;
+}
+.box-header h3 {
+    font-size: 1rem; font-weight: 600; color: var(--text-main);
+    display: flex; align-items: center; gap: 8px; margin: 0;
+}
+.box-header i { color: var(--text-muted); }
+
+.img-wrapper {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+    background-size: 20px 20px;
 }
 
-legend {
-    padding: 0 10px;
-    font-weight: bold;
-    color: #0984e3;
+.img-wrapper img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* Giữ tỷ lệ ảnh */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border-radius: 4px;
 }
 
-hr {
-    border: none;
-    border-top: 1px solid #dfe6e9;
-    margin-top: 20px;
+/* Loader overlaying processed image */
+#loader {
+    position: absolute; inset: 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(2px);
+    display: flex; justify-content: center; align-items: center; z-index: 10;
 }
+.spinner {
+    width: 40px; height: 40px;
+    border: 4px solid #e2e8f0; border-top: 4px solid var(--primary);
+    border-radius: 50%; animation: spin 0.8s linear infinite;
+}
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
